@@ -1,0 +1,9 @@
+# python cache
+__pycache__
+
+# env
+venv
+env
+
+# OS related
+*.DS_Store
