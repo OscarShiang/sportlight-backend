@@ -35,6 +35,18 @@ def signIn():
 
     return jsonify(False)
 
+@app.route('/api/event', methods=['POST'])
+def eventCreate():
+    parser = reqparse.RequestParser()
+    parser.add_argument('founder', type=str, required=True)
+    parser.add_argument('sport', type=str, required=True)
+    parser.add_argument('start_at', type=str, required=True)
+
+    data = parser.parse_args()
+
+    ret = database.createEvent(data['founder'], (data['sport'], data['start_at']))
+    return jsonify(ret)
+
 @app.route('/api/test', methods=['GET', 'POST'])
 def test():
     data = {
