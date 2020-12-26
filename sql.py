@@ -35,7 +35,7 @@ class Database():
         return True
 
     def getEvents(self):
-        query = f'''SELECT founder, sport, start_at FROM event;'''
+        query = f'''SELECT founder, sport, start_at FROM event ORDER BY start_at DESC LIMIT 10;'''
 
         self.cursor.execute(query)
         return self.cursor.fetchall()

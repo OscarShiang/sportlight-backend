@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_restful import reqparse
 from os import getenv
+import datetime as dt
 
 from sql import Database
 
@@ -34,6 +35,21 @@ def signIn():
         return jsonify(True)
 
     return jsonify(False)
+
+@app.route('/api/event', methods=['GET'])
+def eventGet():
+    data_list = database.getEvents()
+    event_list = []
+    for founder, sport, start_at in data_list:
+        date_str = start_at.strftime('%Y-%m-%d %H:%M')
+        element = {
+            'founder': founder,
+            'sport': sport,
+            'start_at': date_str
+        }
+        event_list.append(element)
+
+    return jsonify({'events': event_list})
 
 @app.route('/api/event', methods=['POST'])
 def eventCreate():
