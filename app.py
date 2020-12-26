@@ -14,8 +14,11 @@ def signUp():
     parser.add_argument('passwd', type=str, required=True, help='Parameter not sufficient')
 
     data = parser.parse_args()
-    database.createAccount((data['user'], data['passwd']))
+    test = database.getAccountInfo(data['user'])
+    if test:
+        return jsonify(False)
 
+    database.createAccount((data['user'], data['passwd']))
     return jsonify(True)
 
 @app.route('/api/account/signin', methods=['POST'])
