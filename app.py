@@ -52,12 +52,13 @@ def signIn():
 def eventGet():
     data_list = database.getEvents()
     event_list = []
-    for uid, founder, sport, start_at in data_list:
+    for uid, founder, sport, participant, start_at in data_list:
         date_str = start_at.strftime('%Y-%m-%d %H:%M')
         element = {
             'id': uid,
             'founder': founder,
             'sport': sport,
+            'participant': participant,
             'start_at': date_str
         }
         event_list.append(element)
@@ -74,6 +75,17 @@ def eventCreate():
     data = parser.parse_args()
 
     ret = database.createEvent(data['founder'], (data['sport'], data['start_at']))
+    return jsonify(ret)
+
+@app.route('/api/event/join', methods=['POST'])
+def eventJoin():
+    parser = reqparse.RequestParser()
+    parser.add_argument('event_id', type=int, required=True)
+    parser.add_argument('user_id', type=int, required=True)
+
+    data = parser.parse_args()
+
+    ret = database.joinEvent(data['event_id'], data['user_id'])
     return jsonify(ret)
 
 @app.route('/api/cga/<int:uid>', methods=['GET'])

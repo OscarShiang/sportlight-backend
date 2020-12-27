@@ -35,10 +35,26 @@ class Database():
         return True
 
     def getEvents(self):
-        query = f'''SELECT id, founder, sport, start_at FROM event ORDER BY start_at DESC LIMIT 10;'''
+        query = f'''SELECT id, founder, sport, participant, start_at FROM event ORDER BY start_at DESC LIMIT 10;'''
 
         self.cursor.execute(query)
         return self.cursor.fetchall()
+
+    def joinEvent(self, event_id, user_id):
+        query = f'''SELECT participant FROM event WHERE id = {event_id};'''
+        self.cursor.execute(query)
+
+        participants = self.cursor.fetchone()[0]
+        if participants == '':
+            participants = str(user_id)
+        else:
+            participants += f',{user_id}'
+
+        query = f'''UPDATE event SET participant = '{participants}' WHERE id = {event_id}'''
+        self.cursor.execute(query)
+        self.conn.commit()
+
+        return True
 
     def insertCGAResult(self, result):
         uid, height, weight, ab_wei, exercise, fall_down = result
