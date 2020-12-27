@@ -22,6 +22,11 @@ class Database():
         self.cursor.execute(query)
         return self.cursor.fetchone()
 
+    def getUserByID(self, uID):
+        query = f'''SELECT * FROM account WHERE id = '{uID}';'''
+        self.cursor.execute(query)
+        return self.cursor.fetchone()
+
     def createEvent(self, founder, event_info):
         sport, start_at = event_info
 

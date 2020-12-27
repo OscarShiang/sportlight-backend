@@ -48,6 +48,19 @@ def signIn():
 
     return jsonify(None)
 
+@app.route('/api/account/<int:uid>', methods=['GET'])
+def getUser(uid):
+    user = database.getUserByID(uid)
+
+    if user:
+        res = {
+            'id': user[0],
+            'user': user[1]
+        }
+        return jsonify(res)
+    
+    return jsonify(None)
+
 @app.route('/api/event', methods=['GET'])
 def eventGet():
     data_list = database.getEvents()
