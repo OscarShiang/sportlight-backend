@@ -22,8 +22,11 @@ def signUp():
     database.createAccount((data['user'], data['passwd']))
     info = database.getAccountInfo(data['user'])
     res = {
-        'id': info[0],
-        'user': info[1]
+        'status': True,
+        'info': {
+            'id': info[0],
+            'user': info[1]
+        }
     }
     return jsonify(res)
 
