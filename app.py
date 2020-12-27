@@ -17,10 +17,15 @@ def signUp():
     data = parser.parse_args()
     test = database.getAccountInfo(data['user'])
     if test:
-        return jsonify(False)
+        return jsonify({'status': False})
 
     database.createAccount((data['user'], data['passwd']))
-    return jsonify(True)
+    info = database.getAccountInfo(data['user'])
+    res = {
+        'id': info[0],
+        'user': info[1]
+    }
+    return jsonify(res)
 
 @app.route('/api/account/signin', methods=['POST'])
 def signIn():
@@ -31,10 +36,14 @@ def signIn():
     data = parser.parse_args()
     info = database.getAccountInfo(data['user'])
 
-    if info and data['passwd'] == info[1]:
-        return jsonify(True)
+    if info and data['passwd'] == info[2]:
+        res = {
+            'id': info[0],
+            'user': info[1]
+        }
+        return jsonify(res)
 
-    return jsonify(False)
+    return jsonify(None)
 
 @app.route('/api/event', methods=['GET'])
 def eventGet():
@@ -61,6 +70,36 @@ def eventCreate():
     data = parser.parse_args()
 
     ret = database.createEvent(data['founder'], (data['sport'], data['start_at']))
+    return jsonify(ret)
+
+@app.route('/api/cga/<int:uid>', methods=['GET'])
+def getCGAResult(uid):
+    data = database.getCGAResult(uid)
+
+    res = {
+        'height': data[0],
+        'weight': data[1],
+        'abnormal_weight': data[2],
+        'exercise': data[3],
+        'fall_down': data[4]
+    }
+    return jsonify(res)
+
+@app.route('/api/cga', methods=['POST'])
+def setCGAResult():
+    parser = reqparse.RequestParser()
+    parser.add_argument('id', type=int, required=True)
+    parser.add_argument('height', type=int, required=True)
+    parser.add_argument('weight', type=int, required=True)
+    parser.add_argument('abnormal_weight', type=bool, required=True)
+    parser.add_argument('exercise', type=int, required=True)
+    parser.add_argument('fall_down', type=bool, required=True)
+
+    data = parser.parse_args()
+
+    result = (data['id'], data['height'], data['weight'], data['abnormal_weight'], data['exercise'], data['fall_down'])
+    ret = database.insertCGAResult(result)
+
     return jsonify(ret)
 
 @app.route('/api/test', methods=['GET', 'POST'])

@@ -18,7 +18,7 @@ class Database():
         return True
 
     def getAccountInfo(self, user):
-        query = f'''SELECT name, passwd FROM account WHERE name = '{user}';'''
+        query = f'''SELECT * FROM account WHERE name = '{user}';'''
         self.cursor.execute(query)
         return self.cursor.fetchone()
 
@@ -39,6 +39,20 @@ class Database():
 
         self.cursor.execute(query)
         return self.cursor.fetchall()
+
+    def insertCGAResult(self, result):
+        uid, height, weight, ab_wei, exercise, fall_down = result
+
+        query = f'''INSERT INTO cga_result (id, height, weight, abnormal_weight, exercise, fall_down) VALUES ({uid}, {height}, {weight}, {ab_wei}, {exercise}, {fall_down});'''
+        self.cursor.execute(query)
+        self.conn.commit()
+
+        return True
+
+    def getCGAResult(self, uid):
+        query = f'''SELECT height, weight, abnormal_weight, exercise, fall_down FROM cga_result;'''
+        self.cursor.execute(query)
+        return self.cursor.fetchone()
 
     def close(self):
         self.conn.close()
