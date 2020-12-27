@@ -52,9 +52,10 @@ def signIn():
 def eventGet():
     data_list = database.getEvents()
     event_list = []
-    for founder, sport, start_at in data_list:
+    for uid, founder, sport, start_at in data_list:
         date_str = start_at.strftime('%Y-%m-%d %H:%M')
         element = {
+            'id': uid,
             'founder': founder,
             'sport': sport,
             'start_at': date_str
