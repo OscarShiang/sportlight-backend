@@ -120,13 +120,11 @@ def setCGAResult():
     parser.add_argument('id', type=int, required=True)
     parser.add_argument('height', type=int, required=True)
     parser.add_argument('weight', type=int, required=True)
-    parser.add_argument('abnormal_weight', type=bool, required=True)
-    parser.add_argument('exercise', type=int, required=True)
-    parser.add_argument('fall_down', type=bool, required=True)
+    parser.add_argument('score', type=int, required=True)
 
     data = parser.parse_args()
 
-    result = (data['id'], data['height'], data['weight'], data['abnormal_weight'], data['exercise'], data['fall_down'])
+    result = (data['id'], data['height'], data['weight'], data['score'])
     ret = database.insertCGAResult(result)
 
     return jsonify(ret)

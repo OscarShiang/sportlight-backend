@@ -62,9 +62,9 @@ class Database():
         return True
 
     def insertCGAResult(self, result):
-        uid, height, weight, ab_wei, exercise, fall_down = result
+        uid, height, weight, score = result
 
-        query = f'''INSERT INTO cga_result (id, height, weight, abnormal_weight, exercise, fall_down) VALUES ({uid}, {height}, {weight}, {ab_wei}, {exercise}, {fall_down});'''
+        query = f'''INSERT INTO cga_result (id, height, weight, score) VALUES ({uid}, {height}, {weight}, {score});'''
         self.cursor.execute(query)
         self.conn.commit()
 
