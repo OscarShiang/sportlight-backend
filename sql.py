@@ -71,7 +71,7 @@ class Database():
         return True
 
     def getCGAResult(self, uid):
-        query = f'''SELECT height, weight, abnormal_weight, exercise, fall_down FROM cga_result;'''
+        query = f'''SELECT * FROM cga_result WHERE id = {uid};'''
         self.cursor.execute(query)
         return self.cursor.fetchone()
 

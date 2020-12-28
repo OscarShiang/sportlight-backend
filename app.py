@@ -106,11 +106,10 @@ def getCGAResult(uid):
     data = database.getCGAResult(uid)
 
     res = {
-        'height': data[0],
-        'weight': data[1],
-        'abnormal_weight': data[2],
-        'exercise': data[3],
-        'fall_down': data[4]
+        'id': data[0]
+        'height': data[1],
+        'weight': data[2],
+        'score': data[3]
     }
     return jsonify(res)
 
