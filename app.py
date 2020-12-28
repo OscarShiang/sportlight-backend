@@ -106,7 +106,7 @@ def getCGAResult(uid):
     data = database.getCGAResult(uid)
 
     res = {
-        'id': data[0]
+        'id': data[0],
         'height': data[1],
         'weight': data[2],
         'score': data[3]
@@ -139,4 +139,4 @@ def test():
 
 if __name__ == '__main__':
     port = int(getenv('PORT', 8000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)
