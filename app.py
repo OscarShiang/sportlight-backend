@@ -65,14 +65,15 @@ def getUser(uid):
 def eventGet():
     data_list = database.getEvents()
     event_list = []
-    for uid, founder, sport, participant, start_at in data_list:
+    for uid, founder, sport, participant, start_at, pos in data_list:
         date_str = start_at.strftime('%Y-%m-%d %H:%M')
         element = {
             'id': uid,
             'founder': founder,
             'sport': sport,
             'participant': participant,
-            'start_at': date_str
+            'start_at': date_str,
+            'pos': pos
         }
         event_list.append(element)
 
@@ -84,10 +85,11 @@ def eventCreate():
     parser.add_argument('founder', type=str, required=True)
     parser.add_argument('sport', type=str, required=True)
     parser.add_argument('start_at', type=str, required=True)
+    parser.add_argument('pos', type=str, required=True)
 
     data = parser.parse_args()
 
-    ret = database.createEvent(data['founder'], (data['sport'], data['start_at']))
+    ret = database.createEvent(data['founder'], (data['sport'], data['start_at'], data['pos']))
     return jsonify(ret)
 
 @app.route('/api/event/join', methods=['POST'])

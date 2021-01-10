@@ -28,19 +28,19 @@ class Database():
         return self.cursor.fetchone()
 
     def createEvent(self, founder, event_info):
-        sport, start_at = event_info
+        sport, start_at, pos = event_info
 
         start_at = dt.datetime.strptime(start_at, '%Y-%m-%d %H:%M')
         start_at = dt.datetime.timestamp(start_at)
 
-        query = f'''INSERT INTO event (founder, sport, start_at, created_at) VALUES ('{founder}',
+        query = f'''INSERT INTO event (founder, sport, start_at, created_at, pos) VALUES ('{founder}',
                 '{sport}', {psycopg2.TimestampFromTicks(start_at)}, {psycopg2.TimestampFromTicks(time.time())});'''
         self.cursor.execute(query)
         self.conn.commit()
         return True
 
     def getEvents(self):
-        query = f'''SELECT id, founder, sport, participant, start_at FROM event ORDER BY start_at DESC LIMIT 10;'''
+        query = f'''SELECT id, founder, sport, participant, start_at, pos FROM event ORDER BY start_at DESC LIMIT 10;'''
 
         self.cursor.execute(query)
         return self.cursor.fetchall()
